@@ -8,9 +8,7 @@ class TwitterCloneApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Twitter Clone',
       theme: ThemeData.dark().copyWith(
-        primaryColor: Colors.blue,
         scaffoldBackgroundColor: Colors.black,
         appBarTheme: AppBarTheme(
           color: Colors.black,

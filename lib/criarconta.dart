@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class CreateAccountPage extends StatelessWidget {
   CreateAccountPage({Key? key}) : super(key: key);
 
+  
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -50,7 +52,7 @@ class CreateAccountPage extends StatelessWidget {
     } on FirebaseAuthException catch (e) {
       String message = '';
       if (e.code == 'weak-password') {
-        message = 'A senha fornecida é muito fraca.';
+        message = 'A senha fornecida é muito fraca';
       } else if (e.code == 'email-already-in-use') {
         message = 'Esse e-mail já foi utilizado';
       } else {

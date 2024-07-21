@@ -5,15 +5,48 @@ import 'package:rool/criarconta.dart';
 import 'package:rool/home.dart';
 import 'package:rool/main.dart';
 import 'package:rool/redefinirsenha.dart';
+import 'package:rool/logingoogle.dart'; // Importe o serviço
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    String email = '';
-    String password = '';
+  _LoginPageState createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
+  final GoogleSignInService _googleSignInService = GoogleSignInService();
+  bool _isSigningIn = false;
+  String email = '';
+  String password = '';
+
+  Future<void> _handleSignIn(BuildContext context) async {
+    setState(() {
+      _isSigningIn = true;
+    });
+
+    User? user = await _googleSignInService.signInWithGoogle();
+
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        CupertinoPageRoute(builder: (context) => Home()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Falha ao fazer login com o Google."),
+        ),
+      );
+    }
+
+    setState(() {
+      _isSigningIn = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -86,9 +119,11 @@ class LoginPage extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ForgotPasswordPage()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ForgotPasswordPage(),
+                  ),
+                );
               },
               child: Row(
                 children: [
@@ -125,7 +160,7 @@ class LoginPage extends StatelessWidget {
                       password: password,
                     );
                     // Se a autenticação for bem-sucedida, navegue para a próxima tela
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       CupertinoPageRoute(
                         builder: (context) => Home(),
@@ -200,9 +235,8 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () {
-                //
-                // Adicione aqui a lógica para autenticação com o Google
+              onTap: () async {
+                await _handleSignIn(context);
               },
               child: Container(
                 padding: const EdgeInsets.all(10),
@@ -227,6 +261,18 @@ class LoginPage extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
+                    if (_isSigningIn)
+                      const Padding(
+                        padding: EdgeInsets.only(left: 12),
+                        child: SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.black87),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
