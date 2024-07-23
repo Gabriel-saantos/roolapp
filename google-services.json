@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "894766207106",
+    "project_id": "rool-tooapps",
+    "storage_bucket": "rool-tooapps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894766207106:android:8f1bbeafabd41eaf5e249b",
+        "android_client_info": {
+          "package_name": "com.tooapps.rool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894766207106-cb8fcevccqvvickvnd48d80eithm4sqr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tooapps.rool",
+            "certificate_hash": "6162572bc39b6446e9c7765062f5d548bb05f011"
+          }
+        },
+        {
+          "client_id": "894766207106-1t0mu8ki67fn6tb18qoge54bt1aih10r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBazPLd2bEJHDXZookVKlns8gyGiIRWG7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894766207106-1t0mu8ki67fn6tb18qoge54bt1aih10r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "894766207106-ekj4176pmis8dh4f2egn8asednhom5cm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "apps.too.rool"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

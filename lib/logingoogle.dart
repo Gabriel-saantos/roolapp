@@ -1,38 +1,33 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 class GoogleSignInService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: '894766207106-j5jtm3f81h622p3k8fngn2h1t4qa3th2.apps.googleusercontent.com',
+    clientId: '894766207106-cb8fcevccqvvickvnd48d80eithm4sqr.apps.googleusercontent.com',
   );
 
   Future<User?> signInWithGoogle() async {
     User? user;
     try {
-      if (kIsWeb) {
-        final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
-        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount!.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication.accessToken,
-          idToken: googleSignInAuthentication.idToken,
-        );
-        final UserCredential authResult = await _auth.signInWithCredential(credential);
-        user = authResult.user;
-      } else {
-        final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
-        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount!.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication.accessToken,
-          idToken: googleSignInAuthentication.idToken,
-        );
-        final UserCredential authResult = await _auth.signInWithCredential(credential);
-        user = authResult.user;
+      print("Tentando login no Mobile...");
+      final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+      if (googleSignInAccount == null) {
+        print("Usuário cancelou o login.");
+        return null;
       }
+      print("Login do Google bem-sucedido.");
+      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      final UserCredential authResult = await _auth.signInWithCredential(credential);
+      user = authResult.user;
 
       if (user != null) {
+        print("Usuário autenticado com sucesso: ${user.uid}");
         await _saveUserInfoToFirestore(user);
       }
     } catch (error) {
@@ -48,6 +43,7 @@ class GoogleSignInService {
     final userDoc = usersCollection.doc(user.uid);
     final existingData = (await userDoc.get()).data();
 
+    print("Salvando informações do usuário no Firestore...");
     Map<String, dynamic> userDataToUpdate = {
       'uid': user.uid,
       'displayName': user.displayName,
@@ -66,5 +62,6 @@ class GoogleSignInService {
     }
 
     await userDoc.set(existingData ?? userDataToUpdate);
+    print("Informações do usuário salvas com sucesso.");
   }
 }

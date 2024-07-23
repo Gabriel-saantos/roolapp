@@ -48,6 +48,21 @@ android {
         versionName = flutterVersionName
     }
 
+     signingConfigs {
+        release {
+            storeFile file('/home/user/roolapp/keystore.jks') // Caminho para o arquivo de keystore
+            storePassword '1472580369' // Senha do keystore
+            keyAlias 'mykey' // Alias da chave
+            keyPassword '1472580369' // Senha da chave
+        }
+        debug {
+            storeFile file('/home/user/roolapp/keystore.jks') // Caminho para o arquivo de keystore
+            storePassword '1472580369' // Senha do keystore
+            keyAlias 'mykey' // Alias da chave
+            keyPassword '1472580369' // Senha da chave
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -59,4 +74,12 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:31.0.1')
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.android.gms:play-services-auth:20.0.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
 }
